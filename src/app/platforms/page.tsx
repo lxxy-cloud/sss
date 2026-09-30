@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { PlatformList } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/manage-rdplatform-platformoverview-list-e06b8f82/PlatformList";
+import { KjtestPage } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/shared/KjtestPage";
 
 export const metadata: Metadata = {
-  title: "科技创新管理系统",
+  title: "研发平台清单",
 };
 
-export default function PlatformsPage() {
-  return <PlatformList />;
+export default function Page() {
+  return <KjtestPage route="/platforms" />;
 }

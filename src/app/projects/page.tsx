@@ -1,11 +1,10 @@
-﻿import type { Metadata } from "next";
-
-import { ProjectList } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/manage-technologyproject-projectoverview-dad5ed7b/ProjectList";
+import type { Metadata } from "next";
+import { KjtestPage } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/shared/KjtestPage";
 
 export const metadata: Metadata = {
   title: "项目清单",
 };
 
-export default function ProjectsPage() {
-  return <ProjectList />;
+export default function Page() {
+  return <KjtestPage route="/projects" />;
 }

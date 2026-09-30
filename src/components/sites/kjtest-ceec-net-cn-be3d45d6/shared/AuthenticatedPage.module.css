@@ -1,0 +1,63 @@
+﻿.shell{min-height:100vh;background:#f0f2f5;color:#333;font:14px "Microsoft YaHei","PingFang SC",Arial,sans-serif}
+.header{position:fixed;z-index:10;top:0;right:0;left:0;height:61px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;background:#fff}
+.header::after{position:absolute;right:0;bottom:-3px;left:0;height:3px;content:"";background:linear-gradient(90deg,#1687e8 0%,#276fd5 57%,#d529c5 100%)}
+.brand{margin:0;color:#34495e;font-size:16px;font-weight:700}
+.account{display:flex;align-items:center;gap:18px;color:#5f6e7b}
+.exitButton{border:0;background:transparent;color:#718391;font-size:22px;cursor:pointer}
+.sidebar{position:fixed;z-index:5;top:64px;bottom:0;left:0;width:220px;overflow-y:auto;background:#004ea2}
+.navigation{width:100%}
+.navItem{display:flex;width:100%;height:51px;align-items:center;justify-content:space-between;border:0;padding:0 21px;background:transparent;color:#fff;font:16px inherit;text-align:left;cursor:pointer}
+.navItem:hover,.activeParent{background:#084a90}
+.navItem span{color:#b9d8f3;font-size:18px}
+.navArrow{font-size:23px!important}
+.navChildren{background:#003f83}
+.childItem{display:block;width:100%;height:38px;border:0;padding:0 0 0 43px;background:transparent;color:#d8e9fb;font:14px inherit;text-align:left;cursor:pointer}
+.childItem:hover,.activeChild{background:#3584ed;color:#fff}
+.main{min-height:100vh;margin-left:220px;padding-top:64px}
+.tabs{display:flex;height:55px;align-items:stretch;gap:24px;padding:0 15px;background:#fff;border-bottom:1px solid #e1e5e8;color:#727f8d;overflow-x:auto}
+.tabs span,.tabs button{display:flex;align-items:center;gap:8px;border:0;padding:0 3px;background:transparent;color:inherit;font:14px inherit;white-space:nowrap;cursor:pointer}
+.tabs b{font-size:17px;font-weight:400}
+.homeTab{border-bottom:2px solid #1687e8!important;color:#1687e8!important}
+.openTab{border-bottom:2px solid #1687e8;color:#1687e8!important}
+.workspace{padding:15px}
+.contentPanel{min-width:0;background:#fff}
+.filterBox{padding:14px 20px 11px;border-bottom:1px solid #eee}
+.filterRow{display:flex;min-height:42px;align-items:center;gap:18px;flex-wrap:wrap}
+.fieldLabel{display:flex;align-items:center;gap:9px;color:#333;white-space:nowrap}
+.fieldLabel input,.fieldLabel select{box-sizing:border-box;width:160px;height:30px;border:1px solid #e1e5e8;border-radius:2px;padding:0 8px;background:#fff;color:#555;font:14px inherit;outline:none}
+.fieldLabel input:focus,.fieldLabel select:focus{border-color:#008ffd}
+.choiceGroup{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.choiceTitle{margin-right:2px;color:#333}
+.choiceLabel{display:flex;align-items:center;gap:3px;font-size:13px}
+.choiceLabel input{width:13px;height:13px;margin:0;accent-color:#008ffd}
+.filterButtons{display:flex;gap:9px;margin-left:auto}
+.queryButton,.resetButton{height:30px;min-width:66px;border-radius:3px;font:14px inherit;cursor:pointer}
+.queryButton{border:1px solid #008ffd;background:#008ffd;color:#fff}
+.resetButton{border:1px solid #1e78dd;background:#fff;color:#1e78dd}
+.notice{margin:12px 20px -2px;padding:8px 11px;border:1px solid #b8e1ff;border-radius:2px;background:#eaf7ff;color:#1677b9}
+.tableWrap{overflow-x:auto;padding:16px 20px 0}
+.table{width:100%;min-width:1080px;border-spacing:0;border-collapse:collapse;table-layout:fixed}
+.table th{height:40px;background:#ebf4ff;color:#3d607e;font-size:16px;font-weight:400;text-align:center}
+.table td{height:50px;border-bottom:1px solid #eee;color:#555;font-size:16px;text-align:center}
+.ellipsis{overflow:hidden;padding:0 10px;white-space:nowrap;text-overflow:ellipsis}
+.emptyCell{height:100px!important;color:#98a4af}
+.statusGreen{color:#4a9a37}
+.statusBlue{color:#1687e8}
+.statusOrange{color:#e69138}
+.statusRed{color:#d9534f}
+.viewButton{border:0;padding:0 6px;background:transparent;color:#1687e8;font:14px inherit;cursor:pointer}
+.pagination{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:18px 20px 22px;color:#667785;white-space:nowrap;flex-wrap:wrap}
+.pagination button{width:30px;height:30px;border:1px solid #d9e0e7;background:#fff;color:#637484;font:14px inherit;cursor:pointer}
+.pagination .activePage{border-color:#008ffd;background:#008ffd;color:#fff}
+.pagination .pageArrow{font-size:21px;line-height:20px}
+.pageInput{box-sizing:border-box;width:38px;height:30px;border:1px solid #d9e0e7;padding:0 5px;text-align:center;font:14px inherit;outline:none}
+.confirmPage{width:48px!important}
+.total{margin-left:8px}
+.pageSize{height:30px;border:1px solid #d9e0e7;padding:0 5px;background:#fff;color:#637484}
+.toolbar{display:flex;gap:8px;padding:14px 20px 0}
+.toolbar button{height:30px;min-width:80px;border-radius:3px;font:14px inherit;cursor:pointer}
+.primaryBtn{border:1px solid #008ffd;background:#008ffd;color:#fff}
+.outlineBtn{border:1px solid #1e78dd;background:#fff;color:#1e78dd}
+@media(max-width:1180px){.filterRow{gap:10px 16px}.filterButtons{margin-left:0}}
+@media(max-width:1000px){.sidebar{top:64px;right:0;bottom:auto;width:100%;height:51px;overflow-x:auto;overflow-y:visible}.navigation{display:flex;width:max-content}.navGroup{position:relative}.navItem{width:max-content;min-width:max-content;padding:0 15px}.navChildren{position:absolute;z-index:8;min-width:180px}.main{margin-left:0;padding-top:115px}.tabs{gap:16px}.workspace{padding:10px}.pagination{justify-content:flex-start;overflow-x:auto}}
+@media(max-width:600px){.header{padding:0 14px}.brand{font-size:15px}.account{gap:7px}.account span{display:none}.filterBox,.tableWrap{padding-left:12px;padding-right:12px}.filterRow{align-items:flex-start;flex-direction:column}.fieldLabel{width:100%;justify-content:space-between}.fieldLabel input,.fieldLabel select{width:68%}.choiceGroup{flex-wrap:wrap}.filterButtons{width:100%}.queryButton,.resetButton{flex:1}.pagination{padding-left:12px;padding-right:12px}.total,.pageSize{display:none}}

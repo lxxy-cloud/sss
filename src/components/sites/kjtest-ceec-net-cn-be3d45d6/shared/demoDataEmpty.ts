@@ -1,0 +1,27 @@
+﻿import type { Row } from "./types";
+
+export const DEMO_ROWS_EMPTY: Record<string, Row[]> = {
+  topicSearch: [], topicNotice: [], topicSh: [],
+  appRecords: [], appNotice: [], appApply: [], appReview: [], appTriage: [], appExpert: [], appResult: [],
+  estRecords: [], estNotice: [], estAssigned: [], estApply: [], estReview: [],
+  ongoing: [], acceptance: [], appraisal: [],
+  achIdRecords: [], achIdApply: [], achIdAudit: [], achRegist: [],
+  construction: [], conNotice: [], conApply: [], conAudit: [], conFormal: [],
+  conPushExpert: [], conExpert: [], conPerfect: [], conRelease: [],
+  patents: [], patentFiling: [], patentReview: [],
+  achPromotion: [], achTransform: [],
+  rwRecords: [], rwNotice: [], rwDeclare: [], rwRecommend: [],
+  rwFormal: [], rwPushExpert: [], rwExpertScore: [],
+  rwOrgAudit: [], rwMeetingAudit: [], rwResult: [], rwPublic: [],
+  extRecords: [], extNotice: [], extDeclare: [], extReview: [], extRegist: [],
+  standards: [], entStdRecords: [], entStdAppNotice: [], entStdApp: [], entStdAppAudit: [],
+  entStdEstNotice: [], entStdEst: [], entStdDraft: [], entStdReview: [], entStdRelease: [],
+  stdOrgDraft: [], stdApp: [],
+  engOverview: [], engApply: [], engAudit: [], engOrg: [], engReturn: [], engEval: [], engCasereturn: [],
+  assessOverview: [], assessIssue: [], assessSubmit: [], assessEval: [],
+  statsOverview: [], statsFill: [], annualWork: [],
+  collab: [], knowledge: [], myself: [], dict: [],
+  orgUnits: [], experts: [], userConfigs: [], roleConfigs: [],
+  platformsReg: [], platformsGroup: [], platformsCogRecord: [],
+  platformsCogApply: [], platformsCogReview: [], platformsOps: [], platformsAssess: [],
+};
