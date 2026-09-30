@@ -44,7 +44,23 @@ export type AuthenticatedPageProps<T> = {
   defaultPageSize?: number;
   pageSizeOptions?: number[];
   toolbar?: { label: string; primary?: boolean; onClick?: () => void }[];
-  tabs?: { key: string; label: string; content?: ReactNode }[];
+  tabs?: TabConfig<T>[];
+  defaultTab?: string;
+  children?: ReactNode;
+};
+
+export type TabConfig<T> = {
+  key: string;
+  label: string;
+  rows?: T[];
+  filterRows?: FilterRow[];
+  columns?: ColumnDef<T>[];
+  totalCount?: number;
+  emptyText?: string;
+};
+
+export type AuthenticatedPagePropsExtra = {
+  // placeholder, will be merged into above
   defaultTab?: string;
 };
 
@@ -72,7 +88,13 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
     toolbar,
     tabs,
     defaultTab,
+    children,
   } = props;
+  const activeTabCfg = tabs?.find((t) => t.key === (defaultTab ?? tabs[0]?.key));
+  const effectiveColumns = activeTabCfg?.columns ?? columns;
+  const effectiveRows = activeTabCfg?.rows ?? rows;
+  const effectiveFilterRows = activeTabCfg?.filterRows ?? filterRows;
+  const effectiveTotalCount = activeTabCfg?.totalCount ?? totalCount;
 
   const [openMenus, setOpenMenus] = useState<string[]>(
     sidebar.filter((s) => s.defaultOpen).map((s) => s.label),
@@ -113,7 +135,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
 
   function reset() {
     const empty: Record<string, string> = {};
-    filterRows.flat().forEach((f) => {
+    effectiveFilterRows.flat().forEach((f) => {
       if (f.kind === "radio") empty[f.name] = f.options[0];
       else if (f.kind === "select") empty[f.label] = f.options[0];
       else empty[f.label] = "";
@@ -135,7 +157,8 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
   }
 
   const filtered = useMemo(() => {
-    return rows.filter((row) => {
+  void effectiveRows;
+    return effectiveRows.filter((row) => {
       for (const [k, v] of Object.entries(filters)) {
         if (!v || v === "全部") continue;
         const value = (row as Record<string, unknown>)[k];
@@ -144,11 +167,11 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
       }
       return true;
     });
-  }, [rows, filters]);
+  }, [effectiveRows, filters]);
 
   const sorted = useMemo(() => {
     if (!sort) return filtered;
-    const col = columns.find((c) => (c.sortKey ?? c.title) === sort.key);
+    const col = effectiveColumns.find((c) => (c.sortKey ?? c.title) === sort.key);
     if (!col) return filtered;
     const arr = [...filtered];
     arr.sort((a, b) => {
@@ -160,9 +183,9 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
       return sort.dir === "asc" ? sa.localeCompare(sb, "zh-Hans-CN") : sb.localeCompare(sa, "zh-Hans-CN");
     });
     return arr;
-  }, [filtered, sort, columns]);
+  }, [filtered, sort, effectiveColumns]);
 
-  const total = totalCount ?? sorted.length;
+  const total = effectiveTotalCount ?? sorted.length;
   const pageStart = (page - 1) * pageSize;
   const visible = sorted.slice(pageStart, pageStart + pageSize);
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
@@ -242,9 +265,9 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                 ))}
               </div>
             )}
-            {filterRows.length > 0 && (
+            {effectiveFilterRows.length > 0 && (
               <div className={styles.filterBox}>
-                {filterRows.map((row, ri) => (
+                {effectiveFilterRows.map((row, ri) => (
                   <div className={styles.filterRow} key={ri}>
                     {row.map((field) => {
                       if (field.kind === "text") {
@@ -304,6 +327,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
             {hasActiveFilter && (
               <div className={styles.notice} role="status">已应用筛选条件，当前匹配 {sorted.length} 条记录。</div>
             )}
+            {children && <div className={styles.tableWrap}>{children}</div>}
             {toolbar && toolbar.length > 0 && (
               <div className={styles.toolbar}>
                 {toolbar.map((b) => (
@@ -322,7 +346,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    {columns.map((c) => {
+                    {effectiveColumns.map((c) => {
                       const sortActive = sort && (c.sortKey ?? c.title) === sort.key;
                       return (
                         <th
@@ -345,7 +369,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                 <tbody>
                   {visible.map((row, idx) => (
                     <tr key={rowKey(row, pageStart + idx)}>
-                      {columns.map((c) => {
+                      {effectiveColumns.map((c) => {
                         const val = (row as Record<string, unknown>)[c.title];
                         const display = c.render ? c.render(row, pageStart + idx) : String(val ?? "");
                         const isAction = c.title === "操作";
@@ -366,7 +390,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                   ))}
                   {visible.length === 0 && (
                     <tr>
-                      <td className={styles.emptyCell} colSpan={columns.length}>{emptyText}</td>
+                      <td className={styles.emptyCell} colSpan={effectiveColumns.length}>{emptyText}</td>
                     </tr>
                   )}
                 </tbody>

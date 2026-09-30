@@ -23,6 +23,14 @@ function deriveBreadcrumb(route: string): string[] {
   return [];
 }
 
+function defaultOnClick(label: string) {
+  return () => {
+    if (typeof window !== "undefined") {
+      window.alert(`演示模式：${label}\n（实际接入后端接口）`);
+    }
+  };
+}
+
 export function KjtestPage({ route }: { route: string }) {
   const cfg: RouteCfg | undefined = ROUTE_CFGS[route];
   const rows = useMemo<Row[]>(() => {
@@ -40,8 +48,19 @@ export function KjtestPage({ route }: { route: string }) {
     );
   }
 
+  // Resolve tabs: each tab can swap rowsKey/columns/filterRows
+  const tabs = cfg.tabs?.map((t) => ({
+    key: t.key,
+    label: t.label,
+    rows: t.rowsKey ? ALL_ROWS[t.rowsKey] ?? [] : rows,
+    filterRows: t.filterRows ?? cfg.filterRows,
+    columns: t.columns ?? cfg.columns,
+    totalCount: t.totalCount ?? cfg.totalCount,
+  }));
+
   return (
     <AuthenticatedPage
+      key={route}
       sidebar={SIDEBAR}
       breadcrumb={breadcrumb}
       filterRows={cfg.filterRows}
@@ -52,6 +71,11 @@ export function KjtestPage({ route }: { route: string }) {
         return String(rec.id ?? rec.userId ?? i);
       }}
       totalCount={cfg.totalCount}
-    />
+      tabs={tabs}
+      defaultTab={cfg.defaultTab}
+      toolbar={cfg.toolbar?.map((b) => ({
+        ...b,
+        onClick: defaultOnClick(b.label),
+      }))}    />
   );
 }
