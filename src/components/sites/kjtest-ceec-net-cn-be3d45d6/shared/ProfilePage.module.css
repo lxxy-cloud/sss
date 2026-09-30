@@ -1,0 +1,55 @@
+﻿.page{padding:24px;display:flex;flex-direction:column;gap:16px}
+.header{display:flex;align-items:center;gap:24px;padding:24px 28px;background:linear-gradient(135deg,#1687e8 0%,#276fd5 100%);border-radius:6px;color:#fff;box-shadow:0 2px 8px rgb(23 135 232 / 25%)}
+.avatar{width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;flex-shrink:0}
+.headerInfo{flex:1;min-width:0}
+.name{margin:0 0 4px;font-size:22px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.empId{font-size:14px;font-weight:400;color:rgba(255,255,255,.85)}
+.subtitle{margin:0 0 6px;font-size:14px;color:rgba(255,255,255,.95)}
+.contact{margin:0;font-size:13px;color:rgba(255,255,255,.85)}
+.headerStats{display:flex;gap:24px;flex-shrink:0}
+.headerStats div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 18px;border-left:1px solid rgba(255,255,255,.25)}
+.headerStats div:first-child{border-left:0}
+.headerStats strong{font-size:26px;font-weight:700;line-height:1}
+.headerStats span{font-size:12px;color:rgba(255,255,255,.85)}
+
+.tabs{display:flex;gap:0;border-bottom:2px solid #eee;background:#fff;border-radius:6px 6px 0 0;padding:0 12px}
+.tab,.tabActive{height:48px;padding:0 24px;border:0;background:transparent;color:#666;font:14px "Microsoft YaHei",sans-serif;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab:hover{color:#1687e8}
+.tabActive{color:#1687e8;border-bottom-color:#1687e8;font-weight:700}
+
+.section{background:#fff;border:1px solid #eee;border-radius:0 0 6px 6px;padding:24px 28px;border-top:0}
+.sectionTitle{margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid #eee;font-size:15px;color:#34495e;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin:0}
+.row,.rowFull{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed #f0f0f0}
+.rowFull{grid-column:1 / -1}
+.row dt,.rowFull dt{flex:0 0 90px;color:#999;font-size:13px;line-height:1.6}
+.row dd,.rowFull dd{margin:0;flex:1;color:#333;font-size:14px;line-height:1.6}
+
+.actions{display:flex;gap:12px;justify-content:flex-end;padding-top:20px;margin-top:16px;border-top:1px solid #f0f0f0}
+.primary,.secondary,.danger{height:34px;min-width:88px;padding:0 18px;border-radius:3px;font:14px "Microsoft YaHei",sans-serif;cursor:pointer}
+.primary{border:1px solid #1687e8;background:#1687e8;color:#fff}
+.secondary{border:1px solid #d8d8d8;background:#fff;color:#666}
+.danger{border:1px solid #d9534f;background:#fff;color:#d9534f}
+
+.securityList{display:flex;flex-direction:column;gap:14px}
+.securityRow{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:16px 18px;border:1px solid #f0f0f0;border-radius:4px;background:#fafbfc}
+.securityRow:hover{background:#f5f9ff}
+.securityLeft h4{margin:0 0 4px;font-size:14px;color:#34495e;font-weight:700;display:flex;align-items:center;gap:8px}
+.securityLeft p{margin:0;color:#999;font-size:12px;line-height:1.5}
+.badgeOn{display:inline-block;padding:1px 8px;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:11px;font-weight:400}
+
+.logTable{width:100%;border-collapse:collapse;border:1px solid #eee;border-radius:4px;overflow:hidden}
+.logTable th{height:36px;padding:0 12px;background:#f5f7fa;border-bottom:1px solid #e8e8e8;color:#555;font:600 12px "Microsoft YaHei",sans-serif;text-align:left}
+.logTable td{padding:8px 12px;border-bottom:1px solid #f5f5f5;color:#444;font-size:12px;vertical-align:middle}
+.logTable tbody tr:last-child td{border-bottom:0}
+.mono{font-family:ui-monospace,Consolas,monospace;color:#888}
+.statusOk{display:inline-block;padding:1px 8px;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:11px}
+.statusPending{display:inline-block;padding:1px 8px;border-radius:10px;background:#fff3e0;color:#e65100;font-size:11px}
+
+.modalBackdrop{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:6px;width:420px;padding:24px;box-shadow:0 10px 40px rgb(0 0 0 / 20%);display:flex;flex-direction:column;gap:14px}
+.modal h3{margin:0;font-size:16px;color:#34495e;font-weight:700}
+.modal label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#555}
+.modal input{height:32px;padding:0 10px;border:1px solid #e1e5e8;border-radius:2px;font:13px "Microsoft YaHei",sans-serif;outline:0}
+.modal input:focus{border-color:#1687e8}
+.modalActions{display:flex;justify-content:flex-end;gap:10px;padding-top:8px}
