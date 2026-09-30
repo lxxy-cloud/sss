@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/systemManage/dictionary/dictionaryQuery" />;
+  return <KjtestPage key="/manage/systemManage/dictionary/dictionaryQuery" route="/manage/systemManage/dictionary/dictionaryQuery" />;
 }

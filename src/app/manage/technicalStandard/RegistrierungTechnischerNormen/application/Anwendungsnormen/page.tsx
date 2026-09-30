@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/technicalStandard/RegistrierungTechnischerNormen/application/Anwendungsnormen" />;
+  return <KjtestPage key="/manage/technicalStandard/RegistrierungTechnischerNormen/application/Anwendungsnormen" route="/manage/technicalStandard/RegistrierungTechnischerNormen/application/Anwendungsnormen" />;
 }

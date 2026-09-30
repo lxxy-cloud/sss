@@ -121,3 +121,4 @@ export const ROUTE_CFGS: Record<string, RouteCfg> = {
   "/manage/orgManage/myself/myself": { columns: USER_COLUMNS, rowsKey: "myself" },
   "/manage/systemManage/dictionary/dictionaryQuery": { columns: STANDARD_COLUMNS, rowsKey: "dict" },
 };
+

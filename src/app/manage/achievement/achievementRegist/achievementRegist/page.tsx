@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/achievement/achievementRegist/achievementRegist" />;
+  return <KjtestPage key="/manage/achievement/achievementRegist/achievementRegist" route="/manage/achievement/achievementRegist/achievementRegist" />;
 }

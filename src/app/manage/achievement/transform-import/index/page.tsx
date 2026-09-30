@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/achievement/transform-import/index" />;
+  return <KjtestPage key="/manage/achievement/transform-import/index" route="/manage/achievement/transform-import/index" />;
 }

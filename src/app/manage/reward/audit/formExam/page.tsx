@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/reward/audit/formExam" />;
+  return <KjtestPage key="/manage/reward/audit/formExam" route="/manage/reward/audit/formExam" />;
 }

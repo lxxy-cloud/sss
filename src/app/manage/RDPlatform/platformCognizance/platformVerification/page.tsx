@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/RDPlatform/platformCognizance/platformVerification" />;
+  return <KjtestPage key="/manage/RDPlatform/platformCognizance/platformVerification" route="/manage/RDPlatform/platformCognizance/platformVerification" />;
 }

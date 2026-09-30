@@ -1,17 +1,16 @@
 ﻿"use client";
 
+import Link from "next/link";
 import { ChangeEvent, ReactNode, useMemo, useState } from "react";
 
 import styles from "./AuthenticatedPage.module.css";
-
 export type SidebarChild = {
   label: string;
-  active?: boolean;
   href?: string;
 };
-
 export type SidebarItem = {
   label: string;
+  href?: string;
   defaultOpen?: boolean;
   children?: SidebarChild[];
 };
@@ -28,6 +27,8 @@ export type ColumnDef<T> = {
   width?: string;
   ellipsis?: boolean;
   align?: "left" | "center" | "right";
+  sortable?: boolean;
+  sortKey?: string;
   render?: (row: T, index: number) => ReactNode;
 };
 
@@ -42,11 +43,19 @@ export type AuthenticatedPageProps<T> = {
   totalCount?: number;
   defaultPageSize?: number;
   pageSizeOptions?: number[];
-  toolbar?: { label: string; primary?: boolean }[];
-  subtitle?: string;
+  toolbar?: { label: string; primary?: boolean; onClick?: () => void }[];
+  tabs?: { key: string; label: string; content?: ReactNode }[];
+  defaultTab?: string;
 };
 
 const DEFAULT_PAGE_SIZES = [100, 200, 300, 400, 500];
+
+type SortState = { key: string; dir: "asc" | "desc" };
+
+function getCellValue<T>(row: T, col: ColumnDef<T>): unknown {
+  const key = col.sortKey ?? col.title;
+  return (row as Record<string, unknown>)[key];
+}
 
 export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
   const {
@@ -61,6 +70,8 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
     defaultPageSize = 200,
     pageSizeOptions = DEFAULT_PAGE_SIZES,
     toolbar,
+    tabs,
+    defaultTab,
   } = props;
 
   const [openMenus, setOpenMenus] = useState<string[]>(
@@ -70,7 +81,9 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [filters, setFilters] = useState<Record<string, string>>({});
-  const [notice, setNotice] = useState<string>("");
+  const [sort, setSort] = useState<SortState | null>(null);
+  const [activeTab, setActiveTab] = useState<string>(defaultTab ?? tabs?.[0]?.key ?? "");
+  const [drawerRow, setDrawerRow] = useState<T | null>(null);
 
   function toggle(label: string) {
     setOpenMenus((current) =>
@@ -95,7 +108,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
   function query() {
     setFilters({ ...draft });
     setPage(1);
-    setNotice("");
+    setDrawerRow(null);
   }
 
   function reset() {
@@ -108,11 +121,20 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
     setDraft(empty);
     setFilters({});
     setPage(1);
-    setNotice("");
+    setSort(null);
   }
 
-  // For demo: every page filters by simple string includes on each text/select field.
-  const results = useMemo(() => {
+  function toggleSort(col: ColumnDef<T>) {
+    if (!col.sortable) return;
+    const key = col.sortKey ?? col.title;
+    setSort((current) => {
+      if (!current || current.key !== key) return { key, dir: "asc" };
+      if (current.dir === "asc") return { key, dir: "desc" };
+      return null;
+    });
+  }
+
+  const filtered = useMemo(() => {
     return rows.filter((row) => {
       for (const [k, v] of Object.entries(filters)) {
         if (!v || v === "全部") continue;
@@ -124,8 +146,31 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
     });
   }, [rows, filters]);
 
-  const total = totalCount ?? results.length;
+  const sorted = useMemo(() => {
+    if (!sort) return filtered;
+    const col = columns.find((c) => (c.sortKey ?? c.title) === sort.key);
+    if (!col) return filtered;
+    const arr = [...filtered];
+    arr.sort((a, b) => {
+      const va = getCellValue(a, col);
+      const vb = getCellValue(b, col);
+      if (typeof va === "number" && typeof vb === "number") return sort.dir === "asc" ? va - vb : vb - va;
+      const sa = String(va ?? "");
+      const sb = String(vb ?? "");
+      return sort.dir === "asc" ? sa.localeCompare(sb, "zh-Hans-CN") : sb.localeCompare(sa, "zh-Hans-CN");
+    });
+    return arr;
+  }, [filtered, sort, columns]);
+
+  const total = totalCount ?? sorted.length;
+  const pageStart = (page - 1) * pageSize;
+  const visible = sorted.slice(pageStart, pageStart + pageSize);
+  const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
   const hasActiveFilter = Object.values(filters).some((v) => v && v !== "全部");
+
+  function gotoPage(n: number) {
+    setPage(Math.max(1, Math.min(totalPages, n)));
+  }
 
   return (
     <div className={styles.shell}>
@@ -133,7 +178,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
         <h1 className={styles.brand}>科技创新管理系统</h1>
         <div className={styles.account}>
           <span>集团公司&nbsp;&nbsp;赵耀华&nbsp;(00A0181)</span>
-          <button aria-label="退出登录" className={styles.exitButton} type="button">⏻</button>
+          <Link href="/login.html"><button aria-label="退出登录" className={styles.exitButton} type="button">⏻</button></Link>
         </div>
       </header>
       <aside className={styles.sidebar} aria-label="主导航">
@@ -144,7 +189,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
             return (
               <div className={styles.navGroup} key={item.label}>
                 <button
-                  className={`${styles.navItem} ${isOpen ? styles.activeParent : ""}`}
+                  className={styles.navItem + (isOpen ? " " + styles.activeParent : "")}
                   onClick={() => expandable && toggle(item.label)}
                   type="button"
                 >
@@ -154,13 +199,13 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                 {expandable && isOpen && (
                   <div className={styles.navChildren}>
                     {item.children?.map((child) => (
-                      <button
-                        className={`${styles.childItem} ${child.active ? styles.activeChild : ""}`}
+                      <Link
                         key={child.label}
-                        type="button"
+                        href={child.href ?? "#"}
+                        className={styles.childItemLink}
                       >
-                        {child.label}
-                      </button>
+                        <span className={styles.childItem}>{child.label}</span>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -171,7 +216,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
       </aside>
       <main className={styles.main}>
         <div className={styles.tabs}>
-          <button type="button" className={styles.homeTab}>首页</button>
+          <Link href="/" className={styles.homeTab}>首页</Link>
           {breadcrumb.map((tab, idx) => (
             <span
               key={tab}
@@ -183,6 +228,20 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
         </div>
         <section className={styles.workspace}>
           <div className={styles.contentPanel}>
+            {tabs && tabs.length > 0 && (
+              <div className={styles.innerTabs}>
+                {tabs.map((t) => (
+                  <button
+                    key={t.key}
+                    type="button"
+                    className={styles.innerTab + (activeTab === t.key ? " " + styles.innerTabActive : "")}
+                    onClick={() => setActiveTab(t.key)}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            )}
             {filterRows.length > 0 && (
               <div className={styles.filterBox}>
                 {filterRows.map((row, ri) => (
@@ -195,7 +254,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                             <input
                               value={draft[field.label] ?? ""}
                               onChange={onTextChange(field.label)}
-                              placeholder={field.placeholder ?? `请输入${field.label}`}
+                              placeholder={field.placeholder ?? "请输入" + field.label}
                             />
                           </label>
                         );
@@ -242,9 +301,8 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                 ))}
               </div>
             )}
-            {notice && <div className={styles.notice} role="status">{notice}</div>}
-            {!notice && hasActiveFilter && (
-              <div className={styles.notice} role="status">已应用筛选条件，当前匹配 {results.length} 条记录。</div>
+            {hasActiveFilter && (
+              <div className={styles.notice} role="status">已应用筛选条件，当前匹配 {sorted.length} 条记录。</div>
             )}
             {toolbar && toolbar.length > 0 && (
               <div className={styles.toolbar}>
@@ -253,6 +311,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                     key={b.label}
                     type="button"
                     className={b.primary ? styles.primaryBtn : styles.outlineBtn}
+                    onClick={b.onClick}
                   >
                     {b.label}
                   </button>
@@ -263,28 +322,49 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    {columns.map((c) => (
-                      <th key={c.title} style={c.width ? { width: c.width } : undefined}>
-                        {c.title}
-                      </th>
-                    ))}
+                    {columns.map((c) => {
+                      const sortActive = sort && (c.sortKey ?? c.title) === sort.key;
+                      return (
+                        <th
+                          key={c.title}
+                          style={c.width ? { width: c.width } : undefined}
+                          className={c.sortable ? styles.sortable : undefined}
+                          onClick={() => toggleSort(c)}
+                        >
+                          {c.title}
+                          {c.sortable && (
+                            <span className={styles.sortIcon}>
+                              {sortActive ? (sort!.dir === "asc" ? " ↑" : " ↓") : " ↕"}
+                            </span>
+                          )}
+                        </th>
+                      );
+                    })}
                   </tr>
                 </thead>
                 <tbody>
-                  {results.map((row, idx) => (
-                    <tr key={rowKey(row, idx)}>
-                      {columns.map((c) => (<td
-                          key={c.title}
-                          className={c.ellipsis ? styles.ellipsis : undefined}
-                          style={c.align === "left" ? { textAlign: "left" } : c.align === "right" ? { textAlign: "right" } : undefined}
-                          title={c.ellipsis && typeof (row as Record<string, unknown>)[c.title] === "string" ? String((row as Record<string, unknown>)[c.title]) : undefined}
-                        >
-                          {c.render ? c.render(row, idx) : String((row as Record<string, unknown>)[c.title] ?? "")}
-                        </td>
-                      ))}
+                  {visible.map((row, idx) => (
+                    <tr key={rowKey(row, pageStart + idx)}>
+                      {columns.map((c) => {
+                        const val = (row as Record<string, unknown>)[c.title];
+                        const display = c.render ? c.render(row, pageStart + idx) : String(val ?? "");
+                        const isAction = c.title === "操作";
+                        return (
+                          <td
+                            key={c.title}
+                            className={c.ellipsis ? styles.ellipsis : undefined}
+                            style={c.align === "left" ? { textAlign: "left" } : c.align === "right" ? { textAlign: "right" } : undefined}
+                            title={c.ellipsis && typeof val === "string" ? val : undefined}
+                          >
+                            {isAction
+                              ? <button type="button" style={{ color: "#1687e8", background: "transparent", border: 0, cursor: "pointer" }} onClick={() => setDrawerRow(row)}>查看</button>
+                              : display}
+                          </td>
+                        );
+                      })}
                     </tr>
                   ))}
-                  {results.length === 0 && (
+                  {visible.length === 0 && (
                     <tr>
                       <td className={styles.emptyCell} colSpan={columns.length}>{emptyText}</td>
                     </tr>
@@ -293,35 +373,37 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
               </table>
             </div>
             <div className={styles.pagination}>
-              <button className={styles.pageArrow} type="button" aria-label="上一页" onClick={() => setPage(Math.max(1, page - 1))}>‹</button>
-              {[1, 2, 3].map((n) => (
+              <button className={styles.pageArrow} type="button" aria-label="上一页" onClick={() => gotoPage(page - 1)} disabled={page === 1}>‹</button>
+              {Array.from({ length: Math.min(3, totalPages) }, (_, i) => i + 1).map((n) => (
                 <button
                   key={n}
                   type="button"
                   className={page === n ? styles.activePage : ""}
-                  onClick={() => setPage(n)}
+                  onClick={() => gotoPage(n)}
                 >
                   {n}
                 </button>
               ))}
-              <span>…</span>
-              <button type="button" onClick={() => setPage(10)}>10</button>
-              <button className={styles.pageArrow} type="button" aria-label="下一页" onClick={() => setPage(page + 1)}>›</button>
+              {totalPages > 4 && <span>…</span>}
+              {totalPages > 3 && (
+                <button type="button" onClick={() => gotoPage(totalPages)}>{totalPages}</button>
+              )}
+              <button className={styles.pageArrow} type="button" aria-label="下一页" onClick={() => gotoPage(page + 1)} disabled={page === totalPages}>›</button>
               <span>到第</span>
               <input
                 className={styles.pageInput}
                 aria-label="页码"
                 value={page}
-                onChange={(e) => setPage(Math.max(1, Number(e.target.value) || 1))}
+                onChange={(e) => gotoPage(Math.max(1, Number(e.target.value) || 1))}
               />
               <span>页</span>
-              <button className={styles.confirmPage} type="button">确定</button>
+              <button className={styles.confirmPage} type="button" onClick={() => gotoPage(page)}>确定</button>
               <span className={styles.total}>共 {total} 条</span>
               <select
                 className={styles.pageSize}
                 aria-label="每页条数"
                 value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
+                onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
               >
                 {pageSizeOptions.map((n) => (
                   <option key={n} value={n}>{n} 条/页</option>
@@ -331,6 +413,25 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
           </div>
         </section>
       </main>
+      {drawerRow !== null && (
+        <>
+          <div className={styles.drawerBackdrop} onClick={() => setDrawerRow(null)} />
+          <aside className={styles.drawer} role="dialog" aria-label="详情">
+            <header className={styles.drawerHeader}>
+              <h2>详情</h2>
+              <button type="button" className={styles.drawerClose} onClick={() => setDrawerRow(null)} aria-label="关闭">×</button>
+            </header>
+            <dl className={styles.drawerBody}>
+              {Object.entries(drawerRow as Record<string, unknown>).filter(([k]) => k !== "id" && k !== "userId").map(([k, v]) => (
+                <div key={k} className={styles.drawerRow}>
+                  <dt>{k}</dt>
+                  <dd>{String(v ?? "")}</dd>
+                </div>
+              ))}
+            </dl>
+          </aside>
+        </>
+      )}
     </div>
   );
 }

@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <KjtestPage route="/manage/orgManage/expert/expertQuery" />;
+  return <KjtestPage key="/manage/orgManage/expert/expertQuery" route="/manage/orgManage/expert/expertQuery" />;
 }

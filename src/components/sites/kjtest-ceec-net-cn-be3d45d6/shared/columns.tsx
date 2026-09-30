@@ -38,8 +38,8 @@ const VIEW = makeAction("查看");
 
 export const PROJECT_COLUMNS: ColumnDef<Row>[] = [
   { title: "序号", width: "5%", render: seq() },
-  { title: "立项年份", width: "7%" },
-  { title: "项目名称", width: "20%", ellipsis: true },
+  { title: "立项年份", width: "7%", sortable: true, sortKey: "立项年份" },
+  { title: "项目名称", width: "20%", ellipsis: true, sortable: true, sortKey: "项目名称" },
   { title: "项目等级", width: "7%" },
   { title: "项目类别", width: "9%" },
   { title: "立项机制", width: "8%" },
@@ -76,8 +76,8 @@ export const USER_COLUMNS: ColumnDef<Row>[] = [
 
 export const REWARD_COLUMNS: ColumnDef<Row>[] = [
   { title: "序号", width: "5%", render: seq() },
-  { title: "年度", width: "7%" },
-  { title: "项目名称", width: "20%", ellipsis: true },
+  { title: "年度", width: "7%", sortable: true, sortKey: "年度" },
+  { title: "项目名称", width: "20%", ellipsis: true, sortable: true, sortKey: "项目名称" },
   { title: "主要完成人", width: "20%", ellipsis: true },
   { title: "主要完成单位", width: "20%", ellipsis: true },
   { title: "获奖级别", width: "8%" },

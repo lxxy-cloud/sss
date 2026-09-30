@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { KjtestPage } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/shared/KjtestPage";
 
 export const metadata: Metadata = {
   title: "项目清单",
 };
 
-export default function Page() {
-  return <KjtestPage route="/projects" />;
+export default function ProjectsPage() {
+  return <KjtestPage key="/projects" route="/projects" />;
 }
