@@ -1,10 +1,10 @@
+﻿import { AchievementListPage } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/shared/AchievementListPage";
 import type { Metadata } from "next";
-import { KjtestPage } from "@/components/sites/kjtest-ceec-net-cn-be3d45d6/shared/KjtestPage";
 
 export const metadata: Metadata = {
   title: "成果清单",
 };
 
-export default function Page() {
-  return <KjtestPage key="/manage/achievement/achievementList/achievementList" route="/manage/achievement/achievementList/achievementList" />;
+export default function AchievementListRoutePage() {
+  return <AchievementListPage />;
 }
