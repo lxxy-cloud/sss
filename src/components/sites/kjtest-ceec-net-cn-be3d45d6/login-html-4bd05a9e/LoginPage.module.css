@@ -1,0 +1,205 @@
+.loginWrapper {
+  position: absolute;
+  inset: 0;
+  min-height: 100vh;
+  background: rgb(240, 242, 245) url('/sites/kjtest-ceec-net-cn-be3d45d6/login-html-4bd05a9e/bg_login2.png') no-repeat 50% 110px / 100%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.loginBody {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 110px 10px 40px;
+}
+
+.card {
+  box-sizing: border-box;
+  width: 360px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
+
+.cardHeader {
+  box-sizing: border-box;
+  height: 42px;
+  padding: 0 15px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  color: #333;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 42px;
+}
+
+.cardHeader::before {
+  display: inline-block;
+  margin-right: 8px;
+  color: #333;
+  content: '↪';
+  font-size: 18px;
+  font-weight: 400;
+  transform: rotate(180deg);
+}
+
+.formContent {
+  box-sizing: border-box;
+  padding: 10px 15px 19px;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-left: 1px solid #eee;
+}
+
+.fieldRow {
+  display: flex;
+  height: 38px;
+  margin-bottom: 15px;
+}
+
+.inputIcon {
+  position: relative;
+  box-sizing: border-box;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 38px;
+  border: 1px solid #eee;
+  border-radius: 2px 0 0 2px;
+  background: #fafafa;
+}
+
+.accountIcon::before {
+  position: absolute;
+  top: 9px;
+  left: 19px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #999;
+  border-radius: 50%;
+  content: '';
+}
+
+.accountIcon::after {
+  position: absolute;
+  bottom: 8px;
+  left: 15px;
+  width: 16px;
+  height: 8px;
+  border: 1px solid #999;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  content: '';
+}
+
+.passwordIcon::before {
+  position: absolute;
+  bottom: 9px;
+  left: 16px;
+  box-sizing: border-box;
+  width: 16px;
+  height: 11px;
+  border: 1px solid #999;
+  border-radius: 1px;
+  content: '';
+}
+
+.passwordIcon::after {
+  position: absolute;
+  top: 8px;
+  left: 19px;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #999;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  content: '';
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
+  min-width: 0;
+  padding: 0 10px;
+  border: 1px solid #eee;
+  border-left: 0;
+  border-radius: 0 2px 2px 0;
+  outline: 0;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  position: relative;
+  border-color: #01aaed;
+  box-shadow: 0 0 3px rgb(1 170 237 / 35%);
+}
+
+.input::placeholder {
+  color: #8b8b8b;
+  opacity: 1;
+}
+
+.rememberRow {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 38px;
+  margin-bottom: 17px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.checkbox {
+  position: relative;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  margin: 0 5px 0 10px;
+  appearance: none;
+  border: 1px solid #d2d2d2;
+  border-radius: 2px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  border-color: #01aaed;
+  background: #01aaed;
+}
+
+.checkbox:checked::after {
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  content: '';
+  transform: rotate(45deg);
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid rgb(1 170 237 / 35%);
+  outline-offset: 1px;
+}
+
+.submitButton {
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: #01aaed;
+  color: #fafafa;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 38px;
+}
