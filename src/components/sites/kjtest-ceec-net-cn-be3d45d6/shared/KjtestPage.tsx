@@ -71,6 +71,7 @@ export function KjtestPage({ route }: { route: string }) {
         return String(rec.id ?? rec.userId ?? i);
       }}
       totalCount={cfg.totalCount}
+      detailRouteBase={cfg.detailRouteBase}
       tabs={tabs}
       defaultTab={cfg.defaultTab}
       toolbar={cfg.toolbar?.map((b) => ({

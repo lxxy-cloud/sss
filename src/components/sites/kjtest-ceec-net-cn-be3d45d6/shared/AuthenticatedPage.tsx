@@ -47,6 +47,7 @@ export type AuthenticatedPageProps<T> = {
   tabs?: TabConfig<T>[];
   defaultTab?: string;
   children?: ReactNode;
+  detailRouteBase?: string;
 };
 
 export type TabConfig<T> = {
@@ -89,6 +90,7 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
     tabs,
     defaultTab,
     children,
+    detailRouteBase,
   } = props;
   const activeTabCfg = tabs?.find((t) => t.key === (defaultTab ?? tabs[0]?.key));
   const effectiveColumns = activeTabCfg?.columns ?? columns;
@@ -342,6 +344,8 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                 ))}
               </div>
             )}
+            {effectiveColumns.length > 0 && (
+          <>
             <div className={styles.tableWrap}>
               <table className={styles.table}>
                 <thead>
@@ -381,7 +385,9 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                             title={c.ellipsis && typeof val === "string" ? val : undefined}
                           >
                             {isAction
-                              ? <button type="button" style={{ color: "#1687e8", background: "transparent", border: 0, cursor: "pointer" }} onClick={() => setDrawerRow(row)}>查看</button>
+                              ? detailRouteBase
+                                ? <Link href={`${detailRouteBase}/${(row as { id?: number; userId?: number }).id ?? (row as { userId?: number }).userId}`} style={{ color: "#1687e8", background: "transparent", border: 0, cursor: "pointer", textDecoration: "none" }}>查看</Link>
+                                : <button type="button" style={{ color: "#1687e8", background: "transparent", border: 0, cursor: "pointer" }} onClick={() => setDrawerRow(row)}>查看</button>
                               : display}
                           </td>
                         );
@@ -434,6 +440,8 @@ export function AuthenticatedPage<T>(props: AuthenticatedPageProps<T>) {
                 ))}
               </select>
             </div>
+          </>
+            )}
           </div>
         </section>
       </main>

@@ -27,17 +27,18 @@ export type RouteCfg = {
   }>;
   defaultTab?: string;
   toolbar?: Array<{ label: string; primary?: boolean }>;
+  detailRouteBase?: string;
 };
 
 export const ROUTE_CFGS: Record<string, RouteCfg> = {
-  "/users": { columns: USER_COLUMNS, filterRows: F_USER, rowsKey: "users", totalCount: 79, toolbar: [
+  "/users": { detailRouteBase: "/users", columns: USER_COLUMNS, filterRows: F_USER, rowsKey: "users", totalCount: 79, toolbar: [
     { label: "新增能建内科技人员", primary: true }, { label: "新增能建外科技人员" }, { label: "导出清单" },
   ] },
   "/manage/orgManage/org": { columns: USER_COLUMNS, filterRows: F_USER, rowsKey: "orgUnits", totalCount: 38 },
   "/manage/orgManage/expert/expertQuery": { columns: USER_COLUMNS, filterRows: F_USER, rowsKey: "experts" },
   "/manage/systemManage/user": { columns: USER_COLUMNS, filterRows: F_USER, rowsKey: "userConfigs" },
   "/manage/systemManage/role": { columns: USER_COLUMNS, filterRows: F_USER, rowsKey: "roleConfigs" },
-  "/platforms": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platforms", totalCount: 12 },
+  "/platforms": { detailRouteBase: "/platforms", columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platforms", totalCount: 12 },
   "/manage/RDPlatform/platformRegistration/list": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platformsReg" },
   "/manage/RDPlatform/groupFormation/list": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platformsGroup" },
   "/manage/RDPlatform/platformCognizance/platformVerificationQuery": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platformsCogRecord" },
@@ -46,7 +47,7 @@ export const ROUTE_CFGS: Record<string, RouteCfg> = {
   "/manage/RDPlatform/platformCognizance/platformVerificationInspect": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platformsCogReview" },
   "/manage/RDPlatform/platformManagement/list": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platformsOps" },
   "/manage/RDPlatform/assessmentManagement/list": { columns: PLATFORM_COLUMNS, filterRows: F_PLATFORM, rowsKey: "platformsAssess" },
-  "/projects": { columns: PROJECT_COLUMNS, filterRows: F_PROJECT, rowsKey: "projects", totalCount: 79 },
+  "/projects": { detailRouteBase: "/projects", columns: PROJECT_COLUMNS, filterRows: F_PROJECT, rowsKey: "projects", totalCount: 79 },
   "/manage/technologyProject/collectTopics/collectTopicsSearch": { columns: TOPIC_COLUMNS, filterRows: F_TOPIC, rowsKey: "topicSearch" },
   "/manage/technologyProject/collectTopics/collectTopicsManage": { columns: TOPIC_NOTICE_COLUMNS, filterRows: F_TOPIC_NOTICE, rowsKey: "topicNotice" },
   "/manage/technologyProject/collectTopics/collectTopicsSB": { columns: TOPIC_NOTICE_COLUMNS, filterRows: F_TOPIC_NOTICE, rowsKey: "topicSb", defaultTab: "notice", tabs: [
@@ -98,7 +99,7 @@ export const ROUTE_CFGS: Record<string, RouteCfg> = {
   "/manage/achievement/patenManagement/patentReview": { columns: PATENT_COLUMNS, filterRows: F_PATENT, rowsKey: "patentReview" },
   "/manage/achievement/promotion-catalog/index": { columns: ACHIEVEMENT_COLUMNS, filterRows: F_ACHIEVEMENT, rowsKey: "achPromotion" },
   "/manage/achievement/transform-import/index": { columns: ACHIEVEMENT_COLUMNS, filterRows: F_ACHIEVEMENT, rowsKey: "achTransform" },
-  "/rewards": { columns: REWARD_COLUMNS, filterRows: F_REWARD, rowsKey: "rewards", totalCount: 138, defaultTab: "internal", tabs: [
+  "/rewards": { detailRouteBase: "/rewards", columns: REWARD_COLUMNS, filterRows: F_REWARD, rowsKey: "rewards", totalCount: 138, defaultTab: "internal", tabs: [
     { key: "internal", label: "内部奖励", rowsKey: "rewards" },
     { key: "external", label: "外部奖励", rowsKey: "extRecords", columns: REWARD_COLUMNS },
   ] },
