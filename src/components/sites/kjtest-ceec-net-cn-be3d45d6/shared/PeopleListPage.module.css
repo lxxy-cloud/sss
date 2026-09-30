@@ -1,0 +1,29 @@
+﻿.layout{display:flex;height:100%;background:#f0f2f5}
+.sidebar{width:240px;flex-shrink:0;background:#fff;border-right:1px solid #eee}
+.main{flex:1;display:flex;flex-direction:column;padding:14px 18px;gap:14px;overflow:auto}
+.filterBar{display:flex;gap:10px;align-items:center;padding:10px 14px;background:#fff;border:1px solid #eee;border-radius:4px;flex-wrap:wrap}
+.search{height:30px;padding:0 12px;border:1px solid #e1e5e8;border-radius:2px;outline:0;width:240px;font:13px "Microsoft YaHei",sans-serif;color:#333}
+.search:focus{border-color:#1687e8}
+.expertFilter{display:flex;gap:10px;align-items:center}
+.expertFilter label{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#555;cursor:pointer}
+.expertFilter input{accent-color:#1687e8}
+.toolbar{display:flex;gap:8px;margin-left:auto}
+.primary,.outline{height:30px;min-width:84px;padding:0 14px;border-radius:3px;font:12px "Microsoft YaHei",sans-serif;cursor:pointer}
+.primary{border:1px solid #008ffd;background:#008ffd;color:#fff}
+.outline{border:1px solid #1e78dd;background:#fff;color:#1e78dd}
+
+.tableCard{background:#fff;border:1px solid #eee;border-radius:4px;overflow:hidden}
+.table{width:100%;border-collapse:collapse}
+.table th{height:38px;padding:0 12px;background:#f5f7fa;border-bottom:1px solid #e8e8e8;color:#555;font:600 12px "Microsoft YaHei",sans-serif;text-align:center}
+.table td{padding:10px 12px;border-bottom:1px solid #f5f5f5;color:#444;font-size:12px;text-align:center;vertical-align:middle}
+.table tbody tr:hover{background:#f9fbff}
+.mono{font-family:ui-monospace,Consolas,monospace;color:#666}
+.unitCell{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.viewLink{color:#1687e8;text-decoration:none;font-size:12px}
+.viewLink:hover{text-decoration:underline}
+.tagBlue,.tagGreen,.tagGray{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px}
+.tagBlue{background:#e3f2fd;color:#1565c0}
+.tagGreen{background:#e8f5e9;color:#2e7d32}
+.tagGray{background:#f5f5f5;color:#666}
+.empty{height:80px;color:#98a4af}
+.footer{padding:14px 18px;border-top:1px solid #eee;text-align:right;color:#999;font-size:12px;background:#fafbfc}

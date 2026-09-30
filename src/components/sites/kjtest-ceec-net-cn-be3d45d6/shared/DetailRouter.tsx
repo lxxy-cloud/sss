@@ -9,35 +9,29 @@ import { ROUTE_CFGS } from "./routeConfigs";
 
 const ALL_ROWS = { ...DEMO_ROWS_EMPTY, ...DEMO_ROWS };
 
-const ROUTE_TITLE: Record<string, string> = {
-  "/projects": "项目详情",
-  "/platforms": "平台详情",
-  "/users": "个人用户详情",
-  "/rewards": "奖励详情",
-  "/manage/achievement/constructionManagement/constructionList": "工法详情",
-};
-
-const ROUTE_CRUMB: Record<string, string[]> = {
-  "/projects": ["科技项目", "项目清单"],
-  "/platforms": ["研发平台", "研发平台清单"],
-  "/users": ["用户管理", "个人用户"],
-  "/rewards": ["科技奖励", "奖励清单"],
-  "/manage/achievement/constructionManagement/constructionList": ["科技成果", "工法管理", "工法清单"],
+const ROUTE_META: Record<string, { title: string; crumb: string[] }> = {
+  "/projects": { title: "项目详情", crumb: ["科技项目", "项目清单"] },
+  "/platforms": { title: "平台详情", crumb: ["研发平台", "研发平台清单"] },
+  "/users": { title: "个人用户详情", crumb: ["用户管理", "个人用户"] },
+  "/rewards": { title: "奖励详情", crumb: ["科技奖励", "奖励清单"] },
+  "/manage/achievement/achievementList/achievementList": { title: "成果详情", crumb: ["科技成果", "成果清单"] },
+  "/manage/achievement/constructionManagement/constructionList": { title: "工法详情", crumb: ["科技成果", "工法管理", "工法清单"] },
+  "/manage/achievement/patenManagement/patentsList": { title: "专利详情", crumb: ["科技成果", "专利管理", "专利清单"] },
+  "/manage/technicalStandard/listOfTechnicalStandards/index": { title: "技术标准详情", crumb: ["技术标准", "技术标准清单"] },
 };
 
 const STATUS_TONE: Record<string, "green" | "blue" | "orange" | "red" | "gray"> = {
-  "在研": "green",
-  "验收": "blue",
-  "验收文档": "blue",
-  "正常": "green",
-  "已通过": "green",
-  "已退回": "red",
-  "待审核": "orange",
+  "在研": "green", "验收": "blue", "验收文档": "blue",
+  "正常": "green", "已通过": "green", "已退回": "red", "待审核": "orange",
 };
 
+function statusOf(row: Record<string, unknown>): string | undefined {
+  return (row["项目状态"] ?? row["运行状态"] ?? row["审核状态"] ?? row["状态"]) as string | undefined;
+}
+
 function buildSections(row: Record<string, unknown>): DetailSection[] {
-  const entries = Object.entries(row).filter(([k]) => k !== "id" && k !== "userId" && !k.startsWith("_"));
-  // Split into 2-column rows
+  const entries = Object.entries(row).filter(([k]) =>
+    k !== "id" && k !== "userId" && !k.startsWith("_"));
   const fields: DetailField[] = entries.map(([k, v]) => ({ label: k, value: v as React.ReactNode }));
   return [{ title: "全部字段", fields }];
 }
@@ -50,8 +44,9 @@ export function DetailRouter({ route, id }: { route: string; id: string }) {
     return String(rec.id ?? rec.userId ?? "") === String(id);
   }), [rows, id]);
 
-  const title = ROUTE_TITLE[route] ?? "详情";
-  const crumb = ROUTE_CRUMB[route] ?? [];
+  const meta = ROUTE_META[route];
+  const title = meta?.title ?? "详情";
+  const crumb = meta?.crumb ?? [];
   const fullCrumb = [...crumb, id];
 
   if (!row) {
@@ -70,16 +65,15 @@ export function DetailRouter({ route, id }: { route: string; id: string }) {
     );
   }
 
-  const status = row["项目状态"] ?? row["运行状态"] ?? row["审核状态"];
-  const statusText = status !== undefined ? String(status) : undefined;
-  const statusTone = statusText ? STATUS_TONE[statusText] : undefined;
+  const status = statusOf(row);
+  const statusTone = status ? STATUS_TONE[status] : undefined;
 
   return (
     <DetailPage
       breadcrumb={fullCrumb}
       id={id}
       title={title}
-      status={statusText ? { label: statusText, tone: statusTone ?? "gray" } : undefined}
+      status={status ? { label: status, tone: statusTone ?? "gray" } : undefined}
       sections={buildSections(row)}
       actions={[
         { label: "编辑", primary: true, onClick: () => window.alert(`演示模式：编辑 ${id}`) },
